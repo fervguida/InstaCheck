@@ -15,6 +15,17 @@ jobs:
       - name: Baixar o código
         uses: actions/checkout@v4
 
+      - name: Conferir se a chave secreta foi configurada
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        run: |
+          if [ -z "$KEYSTORE_BASE64" ] || [ -z "$KEYSTORE_PASSWORD" ]; then
+            echo "ERRO: faltam os Secrets KEYSTORE_BASE64 e/ou KEYSTORE_PASSWORD."
+            echo "Crie em: Settings > Secrets and variables > Actions."
+            exit 1
+          fi
+
       - name: Instalar Node
         uses: actions/setup-node@v4
         with:
@@ -44,23 +55,28 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleRelease
 
-      - name: Alinhar e assinar o APK com a chave fixa
+      - name: Alinhar e assinar o APK com a chave secreta
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KS_PASS: ${{ secrets.KEYSTORE_PASSWORD }}
         run: |
           mkdir -p build_output
+          echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/instacheck.keystore"
           BT=$(ls -d $ANDROID_HOME/build-tools/* | sort -V | tail -1)
           SRC=$(ls android/app/build/outputs/apk/release/*.apk | head -1)
           echo "APK de origem: $SRC"
           $BT/zipalign -f -p 4 "$SRC" aligned.apk
           $BT/apksigner sign \
-            --ks debug.keystore \
-            --ks-key-alias androiddebugkey \
-            --ks-pass pass:android \
-            --key-pass pass:android \
+            --ks "$RUNNER_TEMP/instacheck.keystore" \
+            --ks-key-alias instacheck \
+            --ks-pass env:KS_PASS \
+            --key-pass env:KS_PASS \
             --v1-signing-enabled true \
             --v2-signing-enabled true \
             --v3-signing-enabled true \
             --out build_output/InstaCheck.apk aligned.apk
-          $BT/apksigner verify --verbose build_output/InstaCheck.apk
+          $BT/apksigner verify --verbose --print-certs build_output/InstaCheck.apk | head -20
+          rm -f "$RUNNER_TEMP/instacheck.keystore"
 
       - name: Guardar o APK como Artefato
         uses: actions/upload-artifact@v4
