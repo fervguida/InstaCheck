@@ -26,11 +26,6 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Usar a chave de assinatura fixa
-        run: |
-          mkdir -p ~/.android
-          cp debug.keystore ~/.android/debug.keystore
-
       - name: Instalar dependências
         run: npm install
 
@@ -43,16 +38,29 @@ jobs:
       - name: Copiar o app para o Android
         run: npx cap sync android
 
-      - name: Compilar o APK
+      - name: Compilar o APK (release)
         working-directory: android
         run: |
           chmod +x gradlew
-          ./gradlew assembleDebug
+          ./gradlew assembleRelease
 
-      - name: Preparar e Renomear APK para InstaCheck
+      - name: Alinhar e assinar o APK com a chave fixa
         run: |
           mkdir -p build_output
-          cp android/app/build/outputs/apk/debug/app-debug.apk build_output/InstaCheck.apk
+          BT=$(ls -d $ANDROID_HOME/build-tools/* | sort -V | tail -1)
+          SRC=$(ls android/app/build/outputs/apk/release/*.apk | head -1)
+          echo "APK de origem: $SRC"
+          $BT/zipalign -f -p 4 "$SRC" aligned.apk
+          $BT/apksigner sign \
+            --ks debug.keystore \
+            --ks-key-alias androiddebugkey \
+            --ks-pass pass:android \
+            --key-pass pass:android \
+            --v1-signing-enabled true \
+            --v2-signing-enabled true \
+            --v3-signing-enabled true \
+            --out build_output/InstaCheck.apk aligned.apk
+          $BT/apksigner verify --verbose build_output/InstaCheck.apk
 
       - name: Guardar o APK como Artefato
         uses: actions/upload-artifact@v4
