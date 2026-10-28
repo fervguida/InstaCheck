@@ -26,6 +26,11 @@ jobs:
           distribution: temurin
           java-version: 17
 
+      - name: Usar a chave de assinatura fixa
+        run: |
+          mkdir -p ~/.android
+          cp signing/debug.keystore ~/.android/debug.keystore
+
       - name: Instalar dependências
         run: npm install
 
