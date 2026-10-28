@@ -1,6 +1,10 @@
-# InstaCheck
+<p align="center">
+  <img src="docs/logo.png" alt="Logo do InstaCheck" width="140">
+</p>
 
-Aplicativo para descobrir **quem você segue no Instagram e não te segue de volta**, usando os dados que o próprio Instagram permite você baixar. Funciona direto no navegador ou como app Android (APK).
+<h1 align="center">InstaCheck</h1>
+
+<p align="center">Aplicativo para descobrir <strong>quem você segue no Instagram e não te segue de volta</strong>, usando os dados que o próprio Instagram permite você baixar. Funciona direto no navegador ou como app Android (APK).</p>
 
 - **Sem login e sem senha.** O app nunca acessa a sua conta.
 - **100% local.** Os arquivos são lidos no seu aparelho e nada é enviado para a internet.
