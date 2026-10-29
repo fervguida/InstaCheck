@@ -14,14 +14,14 @@
 
 ## Baixar
 
-Abra a aba **Releases** (na coluna da direita da página do repositório) e baixe a versão do seu aparelho:
+Abra a aba **Releases** (na coluna da direita da página do repositório), escolha a versão mais recente (a marcada como *Latest*) e baixe o arquivo do seu aparelho. O `N` nos nomes é o número da versão:
 
 | Sistema | Arquivo | Como instalar |
 |---|---|---|
 | Android | `InstaCheck.apk` | Envie para o celular, toque no arquivo e permita instalar de fontes desconhecidas |
-| Windows (instalador) | `InstaCheck-Instalador-1.0.0.exe` | Execute e siga as telas |
-| Windows (portátil) | `InstaCheck-Portatil-1.0.0.exe` | Execute direto, sem instalar |
-| Linux | `InstaCheck-1.0.0.AppImage` | Dê permissão de execução (`chmod +x`) e abra |
+| Windows (instalador) | `InstaCheck-Instalador-1.0.N.exe` | Execute e siga as telas |
+| Windows (portátil) | `InstaCheck-Portatil-1.0.N.exe` | Execute direto, sem instalar |
+| Linux | `InstaCheck-1.0.N.AppImage` | Dê permissão de execução (`chmod +x`) e abra |
 
 > Os aplicativos não são assinados digitalmente. No Windows, se aparecer "O Windows protegeu o computador", clique em **Mais informações** e depois em **Executar assim mesmo**. No Android, se o Play Protect avisar, toque em **Instalar mesmo assim**.
 
@@ -61,23 +61,32 @@ O arquivo do Instagram inclui contas apagadas ou desativadas, que o seu perfil n
 
 Sem nenhuma das duas, o app funciona, mas mostra os números do arquivo.
 
+## Apoie o projeto
+
+O InstaCheck é grátis e de código aberto. Se ele te ajudou e você quiser retribuir, qualquer valor é bem-vindo, mas é totalmente opcional.
+
+**De qualquer país:** [ko-fi.com/fervzeira](https://ko-fi.com/fervzeira)
+
+**Pix (Brasil):** chave aleatória
+
+`9eb09f4c-0725-4fc3-8419-4b0b509391a1`
+
+<img src="docs/pix-qr.png" alt="QR code do Pix" width="200">
+
+No app do seu banco, use **Pix** > **Pagar** e leia o QR code ou cole a chave.
+
+*If InstaCheck helped you, you can support it on [Ko-fi](https://ko-fi.com/fervzeira). Thank you!*
+
 ## Gerar as versões (para quem mantém o projeto)
 
 O GitHub Actions compila tudo automaticamente:
 
-- **Android (APK):** usa o [Capacitor](https://capacitorjs.com/) (workflow `build-apk.yml`).
-- **Computador (Windows e Linux):** usa o [Electron](https://www.electronjs.org/) (workflow `build-desktop.yml`, pasta `desktop/`).
+- **Android (APK):** usa o [Capacitor](https://capacitorjs.com/).
+- **Computador (Windows e Linux):** usa o [Electron](https://www.electronjs.org/) (pasta `desktop/`).
 
-Para publicar uma versão nova:
+A cada envio de alterações para o repositório (branch `main`), o workflow `build-apk.yml` compila o APK e os apps de computador e cria sozinho uma release nova, com a versão seguinte (`v1.0.13`, `v1.0.14`...) e todos os arquivos dentro. Mudanças só em arquivos `.md` ou na pasta `docs` não geram release.
 
-1. Na aba **Releases**, clique em **Draft a new release**.
-2. Em **Choose a tag**, digite um nome como `v1.0.0` e escolha **Create new tag**.
-3. Clique em **Publish release**.
-4. Espere uns 10 a 15 minutos. Os arquivos (APK, .exe e AppImage) aparecem sozinhos na própria release, em *Assets*.
-
-Também dá para compilar sem criar release: aba **Actions** > escolha **Build APK** ou **Build Desktop** > **Run workflow**. Os arquivos ficam em *Artifacts* no fim da execução.
-
-O número da versão do app de computador (nos nomes dos arquivos) vem do campo `version` em `desktop/package.json`.
+Também dá para compilar na mão: aba **Actions** > escolha o workflow > **Run workflow**. Os arquivos ficam em *Artifacts* no fim da execução.
 
 ### Rodar a versão de computador no seu PC
 
