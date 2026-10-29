@@ -1,16 +1,43 @@
-name: Build APK
+name: Build e Publicar
 
 on:
   push:
     branches: [ main, master ]
-    tags: [ 'v*' ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
   workflow_dispatch:
 
 permissions:
   contents: write
 
+# Uma execução por vez, para a numeração das versões não se repetir
+concurrency:
+  group: build-e-publicar
+  cancel-in-progress: false
+
 jobs:
-  build:
+  # 1) Descobre o próximo número de versão (continua de onde parou: v1.0.12 -> v1.0.13)
+  versao:
+    runs-on: ubuntu-latest
+    outputs:
+      numero: ${{ steps.v.outputs.numero }}
+    steps:
+      - name: Baixar o código
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Calcular a próxima versão
+        id: v
+        run: |
+          LAST=$(git tag -l 'v1.0.*' | sed 's/^v1\.0\.//' | grep -E '^[0-9]+$' | sort -n | tail -1)
+          NEXT=$(( ${LAST:-0} + 1 ))
+          echo "numero=${NEXT}" >> "$GITHUB_OUTPUT"
+          echo "Próxima versão: v1.0.${NEXT}"
+
+  # 2) Android (APK)
+  apk:
     runs-on: ubuntu-latest
     steps:
       - name: Baixar o código
@@ -48,14 +75,70 @@ jobs:
       - name: Renomear o APK
         run: cp android/app/build/outputs/apk/debug/app-debug.apk InstaCheck.apk
 
-      - name: Guardar o APK (aba Actions)
+      - name: Guardar o APK
         uses: actions/upload-artifact@v4
         with:
           name: InstaCheck-apk
           path: InstaCheck.apk
+          if-no-files-found: error
 
-      - name: Anexar na Release
-        if: startsWith(github.ref, 'refs/tags/v')
+  # 3) Computador (Windows e Linux)
+  desktop:
+    needs: versao
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ windows-latest, ubuntu-latest ]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: desktop
+    steps:
+      - name: Baixar o código
+        uses: actions/checkout@v4
+
+      - name: Instalar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Compilar o app de computador
+        shell: bash
+        run: npx electron-builder --publish never -c.extraMetadata.version=1.0.${{ needs.versao.outputs.numero }}
+
+      - name: Guardar os arquivos
+        uses: actions/upload-artifact@v4
+        with:
+          name: InstaCheck-computador-${{ matrix.os }}
+          path: |
+            desktop/dist/*.exe
+            desktop/dist/*.AppImage
+          if-no-files-found: error
+
+  # 4) Cria a release com tudo junto
+  publicar:
+    needs: [ versao, apk, desktop ]
+    # Publica o APK mesmo que a versão de computador falhe
+    if: ${{ !cancelled() && needs.versao.result == 'success' && needs.apk.result == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar os arquivos gerados
+        uses: actions/download-artifact@v4
+        with:
+          path: arquivos
+          merge-multiple: true
+
+      - name: Listar arquivos
+        run: ls -R arquivos
+
+      - name: Criar a release
         uses: softprops/action-gh-release@v2
         with:
-          files: InstaCheck.apk
+          tag_name: v1.0.${{ needs.versao.outputs.numero }}
+          name: InstaCheck Build v1.0.${{ needs.versao.outputs.numero }}
+          body: Nova versão do InstaCheck gerada automaticamente pelo GitHub Actions.
+          target_commitish: ${{ github.sha }}
+          files: arquivos/*
