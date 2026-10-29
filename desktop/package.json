@@ -1,0 +1,45 @@
+{
+  "name": "instacheck-desktop",
+  "version": "1.0.0",
+  "description": "InstaCheck - descubra quem não te segue de volta no Instagram (100% local)",
+  "main": "main.js",
+  "author": "InstaCheck",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --publish never"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.instacheck.desktop",
+    "productName": "InstaCheck",
+    "files": ["main.js", "www/**/*", "build/icon.png"],
+    "directories": { "buildResources": "build", "output": "dist" },
+    "win": {
+      "icon": "build/icon.png",
+      "target": [
+        { "target": "nsis", "arch": ["x64"] },
+        { "target": "portable", "arch": ["x64"] }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "InstaCheck-Instalador-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "InstaCheck-Portatil-${version}.${ext}"
+    },
+    "linux": {
+      "icon": "build/icon.png",
+      "category": "Utility",
+      "target": ["AppImage"]
+    },
+    "appImage": {
+      "artifactName": "InstaCheck-${version}.${ext}"
+    }
+  }
+}

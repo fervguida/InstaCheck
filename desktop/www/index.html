@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Unfollower Tracker - Analisador Seguro</title>
+    <link rel="stylesheet" href="assets/tailwind.css">
+    <link rel="stylesheet" href="assets/fontawesome.css">
+    <link rel="stylesheet" href="assets/inter.css">
+    <style>
+        body {
+            background-color: #0F0F10;
+            color: #F3F4F6;
+        }
+        .gradient-text {
+            background: linear-gradient(45deg, #FCAF45, #F77737, #E1306C, #833AB4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #833AB4 0%, #E1306C 50%, #F77737 100%);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1E1E1E;
+            border-radius: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #374151;
+            border-radius: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #4B5563;
+        }
+    </style>
+</head>
+<body class="font-sans min-h-screen flex flex-col justify-between selection:bg-insta-pink selection:text-white">
+
+    <!-- Header / Navbar -->
+    <header class="border-b border-insta-border bg-insta-card/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center text-white text-xl shadow-lg shadow-insta-pink/20">
+                    <i class="fa-brands font-bold fa-instagram"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight">InstaCheck</h1>
+                    <p class="text-xs text-gray-400">Análise segura de não-seguidores</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-3 py-1.5 rounded-full text-xs font-medium">
+                <i class="fa-solid fa-shield-halved text-sm"></i>
+                <span>100% Seguro • Sem Login</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto px-4 py-8 flex-1 w-full">
+
+        <!-- Banner de Segurança e Instruções Rápidas -->
+        <section class="mb-8 bg-insta-card border border-insta-border rounded-2xl p-6 shadow-xl relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 w-40 h-40 gradient-bg opacity-10 rounded-full blur-2xl"></div>
+            
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div>
+                    <span class="inline-block px-2.5 py-1 bg-gradient-to-r from-insta-purple to-insta-pink text-white text-xs font-semibold rounded-md mb-2">
+                        COMO FUNCIONA
+                    </span>
+                    <h2 class="text-xl font-bold text-white mb-1">Descubra quem não te segue de volta</h2>
+                    <p class="text-gray-400 text-sm max-w-2xl">
+                        Este aplicativo compara os seus arquivos oficiais de dados do Instagram direto no seu navegador. Nenhuma senha é solicitada e nada é enviado para servidores externos.
+                    </p>
+                </div>
+                <button id="btn-toggle-instructions" onclick="toggleInstructions()" class="shrink-0 text-sm font-medium text-insta-pink hover:text-white border border-insta-pink/30 hover:border-insta-pink bg-insta-pink/10 hover:bg-insta-pink px-4 py-2.5 rounded-xl transition duration-200 flex items-center gap-2">
+                    <i class="fa-solid fa-circle-question"></i>
+                    <span>Como baixar os dados no Instagram?</span>
+                </button>
+            </div>
+
+            <!-- Guia Passo a Passo (Escondido por padrão) -->
+            <div id="instructions-panel" class="hidden mt-6 pt-6 border-t border-insta-border grid grid-cols-1 md:grid-cols-4 gap-4 text-xs text-gray-300">
+                <div class="bg-black/30 p-4 rounded-xl border border-white/5">
+                    <div class="w-6 h-6 rounded-full gradient-bg text-white font-bold flex items-center justify-center mb-2">1</div>
+                    <p class="font-semibold text-white mb-1">Acesse o Instagram</p>
+                    <p class="text-gray-400">Vá no seu perfil, abra o menu de 3 barras ➔ <strong>Central de Contas</strong> ➔ <strong>Suas informações e permissões</strong>.</p>
+                </div>
+                <div class="bg-black/30 p-4 rounded-xl border border-white/5">
+                    <div class="w-6 h-6 rounded-full gradient-bg text-white font-bold flex items-center justify-center mb-2">2</div>
+                    <p class="font-semibold text-white mb-1">Solicite o Download</p>
+                    <p class="text-gray-400">Escolha <strong>Baixar suas informações</strong> ➔ Selecione apenas <strong>"Seguidores e Seguindo"</strong>.</p>
+                </div>
+                <div class="bg-black/30 p-4 rounded-xl border border-white/5">
+                    <div class="w-6 h-6 rounded-full gradient-bg text-white font-bold flex items-center justify-center mb-2">3</div>
+                    <p class="font-semibold text-white mb-1">Formato JSON ou HTML</p>
+                    <p class="text-gray-400">Gere a cópia (o formato padrão JSON é mais rápido). Baixe e extraia o arquivo ZIP recebido.</p>
+                </div>
+                <div class="bg-black/30 p-4 rounded-xl border border-white/5">
+                    <div class="w-6 h-6 rounded-full gradient-bg text-white font-bold flex items-center justify-center mb-2">4</div>
+                    <p class="font-semibold text-white mb-1">Importe no App</p>
+                    <p class="text-gray-400">Carregue os arquivos <code class="text-insta-yellow">followers_1.json</code> e <code class="text-insta-yellow">following.json</code> logo abaixo.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lista atual do Instagram (deixa tudo exato) -->
+        <section class="mb-6 bg-insta-card border border-insta-border rounded-2xl p-5 space-y-3">
+            <div>
+                <p class="text-sm font-semibold text-white">Deixar os números exatos <span class="text-xs font-normal text-gray-400">(opcional, mas recomendado)</span></p>
+                <p class="text-xs text-gray-400 mt-1">O arquivo do Instagram traz contas apagadas ou desativadas que o seu perfil não conta. Para o app saber quais são, cole aqui a sua lista <strong class="text-gray-200">atual</strong> de "Seguindo":
+                    no Instagram pelo computador, abra seu perfil ➔ <strong class="text-gray-200">Seguindo</strong> ➔ role a lista até o final ➔ <strong class="text-gray-200">Ctrl+A</strong>, <strong class="text-gray-200">Ctrl+C</strong> ➔ cole abaixo.</p>
+            </div>
+            <textarea id="live-following" rows="3" oninput="onLivePaste()" placeholder="Cole aqui a lista de Seguindo copiada do Instagram..." class="w-full bg-black/40 border border-insta-border rounded-xl p-3 text-xs text-gray-200 focus:outline-none focus:border-insta-pink transition font-mono custom-scrollbar"></textarea>
+            <p id="live-status" class="text-xs text-emerald-400"></p>
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 pt-1 border-t border-insta-border">
+                <p class="text-xs text-gray-400 flex-1">Ou, se preferir não colar a lista: digite quantas pessoas VOCÊ SEGUE no perfil (o número de "seguindo", não de seguidores).</p>
+                <input type="number" id="profile-following" oninput="onProfileInput()" placeholder="ex: 528" class="w-28 bg-black/40 border border-insta-border rounded-xl px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-insta-pink">
+            </div>
+        </section>
+
+        <!-- Seletor de Modo de Entrada -->
+        <div class="flex border-b border-insta-border mb-6">
+            <button id="tab-file" onclick="switchTab('file')" class="px-6 py-3 font-semibold text-sm border-b-2 border-insta-pink text-insta-pink flex items-center gap-2 transition">
+                <i class="fa-solid fa-file-arrow-up"></i>
+                <span>Importar Arquivos (Recomendado)</span>
+            </button>
+            <button id="tab-text" onclick="switchTab('text')" class="px-6 py-3 font-semibold text-sm border-b-2 border-transparent text-gray-400 hover:text-gray-200 flex items-center gap-2 transition">
+                <i class="fa-solid fa-align-left"></i>
+                <span>Copiar e Colar Texto</span>
+            </button>
+        </div>
+
+        <!-- MODO 1: UPLOAD DE ARQUIVOS -->
+        <div id="section-file" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Dropzone Seguidores -->
+                <div class="bg-insta-card border-2 border-dashed border-insta-border hover:border-insta-pink/50 rounded-2xl p-6 transition text-center relative group">
+                    <input type="file" id="file-followers" accept=".json,.html" multiple onchange="handleFileSelect('followers')" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                    <div class="space-y-3">
+                        <div class="w-14 h-14 mx-auto rounded-full bg-insta-purple/10 text-insta-purple flex items-center justify-center text-2xl group-hover:scale-110 transition duration-200">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-white">1. Arquivo de SEGUIDORES</h3>
+                            <p class="text-xs text-gray-400 mt-1">Selecione <span class="text-insta-yellow font-mono">followers_1.json</span> (e <span class="text-insta-yellow font-mono">followers_2.json</span>, <span class="text-insta-yellow font-mono">followers_3.json</span>... se existirem — pode marcar vários de uma vez)</p>
+                        </div>
+                        <div id="status-followers" class="text-xs font-medium text-gray-500 bg-black/30 py-2 px-3 rounded-lg border border-white/5 inline-block">
+                            Nenhum arquivo selecionado
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dropzone Seguidos -->
+                <div class="bg-insta-card border-2 border-dashed border-insta-border hover:border-insta-pink/50 rounded-2xl p-6 transition text-center relative group">
+                    <input type="file" id="file-following" accept=".json,.html" multiple onchange="handleFileSelect('following')" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                    <div class="space-y-3">
+                        <div class="w-14 h-14 mx-auto rounded-full bg-insta-pink/10 text-insta-pink flex items-center justify-center text-2xl group-hover:scale-110 transition duration-200">
+                            <i class="fa-solid fa-user-plus"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-white">2. Arquivo de SEGUIDOS</h3>
+                            <p class="text-xs text-gray-400 mt-1">Geralmente nomeado como <span class="text-insta-yellow font-mono">following.json</span> ou <span class="text-insta-yellow font-mono">following.html</span></p>
+                        </div>
+                        <div id="status-following" class="text-xs font-medium text-gray-500 bg-black/30 py-2 px-3 rounded-lg border border-white/5 inline-block">
+                            Nenhum arquivo selecionado
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button id="btn-process-files" onclick="processFiles()" disabled class="gradient-bg text-white font-bold py-3.5 px-8 rounded-xl shadow-lg opacity-50 cursor-not-allowed hover:shadow-insta-pink/20 transition flex items-center justify-center gap-2 mx-auto">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span>Analisar Arquivos</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- MODO 2: COPIAR E COLAR TEXTO -->
+        <div id="section-text" class="hidden space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-insta-card border border-insta-border rounded-2xl p-4">
+                    <label class="block font-semibold text-sm text-gray-200 mb-2">
+                        <i class="fa-solid fa-users text-insta-purple mr-1"></i> Lista de Seguidores (Um por linha):
+                    </label>
+                    <textarea id="text-followers" rows="8" placeholder="usuario1&#10;usuario2&#10;usuario3..." class="w-full bg-black/40 border border-insta-border rounded-xl p-3 text-xs text-gray-200 focus:outline-none focus:border-insta-pink transition font-mono custom-scrollbar"></textarea>
+                </div>
+                <div class="bg-insta-card border border-insta-border rounded-2xl p-4">
+                    <label class="block font-semibold text-sm text-gray-200 mb-2">
+                        <i class="fa-solid fa-user-plus text-insta-pink mr-1"></i> Lista de Seguidos (Um por linha):
+                    </label>
+                    <textarea id="text-following" rows="8" placeholder="usuario1&#10;usuario2&#10;usuario3..." class="w-full bg-black/40 border border-insta-border rounded-xl p-3 text-xs text-gray-200 focus:outline-none focus:border-insta-pink transition font-mono custom-scrollbar"></textarea>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button onclick="processText()" class="gradient-bg text-white font-bold py-3.5 px-8 rounded-xl shadow-lg hover:shadow-insta-pink/20 transition flex items-center justify-center gap-2 mx-auto">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span>Analisar Lista Manual</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- SEÇÃO DE RESULTADOS -->
+        <div id="results-section" class="hidden mt-10 space-y-6">
+            <hr class="border-insta-border">
+
+            <!-- Cards Resumo -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="bg-insta-card border border-insta-border p-5 rounded-2xl flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-gray-400 font-medium">Seguidores</p>
+                        <p id="count-followers" class="text-2xl font-bold text-white mt-1">0</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-xl bg-insta-purple/10 text-insta-purple flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                </div>
+                <div class="bg-insta-card border border-insta-border p-5 rounded-2xl flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-gray-400 font-medium">Seguindo</p>
+                        <p id="count-following" class="text-2xl font-bold text-white mt-1">0</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-xl bg-insta-pink/10 text-insta-pink flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-user-plus"></i>
+                    </div>
+                </div>
+                <div class="bg-insta-card border border-insta-border p-5 rounded-2xl flex items-center justify-between border-l-4 border-l-red-500">
+                    <div>
+                        <p class="text-xs text-gray-400 font-medium">Não Te Seguem de Volta</p>
+                        <p id="count-not-following-back" class="text-2xl font-bold text-red-400 mt-1">0</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-xl bg-red-500/10 text-red-400 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-user-slash"></i>
+                    </div>
+                </div>
+            </div>
+
+            <p id="analysis-details" class="text-xs text-gray-400 text-center"></p>
+
+            <!-- Tabela e Controles de Busca -->
+            <div class="bg-insta-card border border-insta-border rounded-2xl p-6 shadow-xl">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                            <span id="list-title">Lista de Não-Seguidores</span>
+                            <span id="badge-count" class="bg-red-500/20 text-red-400 text-xs px-2.5 py-0.5 rounded-full border border-red-500/30">0</span>
+                        </h3>
+                        <p id="list-sub" class="text-xs text-gray-400">Pessoas que você segue, mas que não te seguem de volta</p>
+                        <p id="list-note" class="text-xs text-amber-400 mt-1"></p>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <!-- Busca -->
+                        <div class="relative flex-1 md:w-64">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs"></i>
+                            <input type="text" id="search-input" onkeyup="filterResults()" placeholder="Buscar usuário..." class="w-full bg-black/40 border border-insta-border rounded-xl pl-9 pr-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-insta-pink">
+                        </div>
+                        <select id="sort-select" onchange="sortList()" class="bg-black/40 border border-insta-border text-gray-300 text-xs rounded-xl px-2 py-2 focus:outline-none focus:border-insta-pink">
+                            <option value="recent">Mais recentes</option>
+                            <option value="oldest">Mais antigos</option>
+                            <option value="az">A–Z</option>
+                        </select>
+                        <button id="btn-fans" onclick="toggleFans()" class="bg-white/5 hover:bg-white/10 text-gray-300 border border-insta-border text-xs px-3 py-2 rounded-xl transition shrink-0">Ver quem te segue e você não segue</button>
+                        <button id="btn-show-dead" onclick="toggleShowDead()" class="bg-white/5 hover:bg-white/10 text-gray-300 border border-insta-border text-xs px-3 py-2 rounded-xl transition shrink-0">Ver marcadas</button>
+                        <!-- Copiar -->
+                        <button onclick="copyUnfollowersList()" class="bg-white/5 hover:bg-white/10 text-gray-300 border border-insta-border text-xs px-3 py-2 rounded-xl transition flex items-center gap-1.5 shrink-0">
+                            <i class="fa-regular fa-copy"></i>
+                            <span>Copiar Lista</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Container da Lista -->
+                <div id="unfollowers-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[450px] overflow-y-auto custom-scrollbar pr-1">
+                    <!-- Usuários serão inseridos dinamicamente aqui -->
+                </div>
+
+                <!-- Alerta quando busca fica vazia -->
+                <div id="empty-search" class="hidden text-center py-12 text-gray-500">
+                    <i class="fa-solid fa-user-xmark text-3xl mb-2"></i>
+                    <p class="text-sm">Nenhum usuário encontrado na busca.</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-insta-border py-6 text-center text-xs text-gray-500">
+        <p>Desenvolvido para análise segura de dados • Processamento 100% Local no Navegador</p>
+    </footer>
+
+    <!-- Toast de Notificação -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-emerald-500 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 transform translate-y-20 opacity-0 transition duration-300 z-50 text-xs font-medium">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="toast-msg">Mensagem</span>
+    </div>
+
+    <script>
+        // Guarda de Dados
+        let followersList = [];
+        let followingList = [];
+        let notFollowingBackList = [];
+        let fileInfo = null;
+        let followingDates = {};
+
+        // Estado dos arquivos
+        let fileData = {
+            followers: null,
+            following: null
+        };
+
+        function switchTab(tab) {
+            const btnFile = document.getElementById('tab-file');
+            const btnText = document.getElementById('tab-text');
+            const secFile = document.getElementById('section-file');
+            const secText = document.getElementById('section-text');
+
+            if (tab === 'file') {
+                btnFile.className = 'px-6 py-3 font-semibold text-sm border-b-2 border-insta-pink text-insta-pink flex items-center gap-2 transition';
+                btnText.className = 'px-6 py-3 font-semibold text-sm border-b-2 border-transparent text-gray-400 hover:text-gray-200 flex items-center gap-2 transition';
+                secFile.classList.remove('hidden');
+                secText.classList.add('hidden');
+            } else {
+                btnText.className = 'px-6 py-3 font-semibold text-sm border-b-2 border-insta-pink text-insta-pink flex items-center gap-2 transition';
+                btnFile.className = 'px-6 py-3 font-semibold text-sm border-b-2 border-transparent text-gray-400 hover:text-gray-200 flex items-center gap-2 transition';
+                secText.classList.remove('hidden');
+                secFile.classList.add('hidden');
+            }
+        }
+
+        function toggleInstructions() {
+            const panel = document.getElementById('instructions-panel');
+            panel.classList.toggle('hidden');
+        }
+
+        function handleFileSelect(type) {
+            const input = document.getElementById(`file-${type}`);
+            const status = document.getElementById(`status-${type}`);
+
+            if (input.files.length > 0) {
+                fileData[type] = Array.from(input.files);
+                const label = fileData[type].length === 1
+                    ? fileData[type][0].name
+                    : `${fileData[type].length} arquivos selecionados`;
+                status.textContent = `✓ ${label}`;
+                status.className = 'text-xs font-medium text-emerald-400 bg-emerald-500/10 py-2 px-3 rounded-lg border border-emerald-500/20 inline-block';
+            }
+
+            // Habilita o botão de analisar se ambos estiverem prontos
+            const btn = document.getElementById('btn-process-files');
+            if (fileData.followers && fileData.following) {
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        // ---------- Utilitários de usuário ----------
+        const USERNAME_REGEX = /^[a-z0-9._]{1,30}$/;
+
+        function normalizeUser(u) {
+            return String(u || '').trim().replace(/^@/, '').replace(/\/+$/, '').toLowerCase();
+        }
+
+        // Aceita https://www.instagram.com/usuario e https://www.instagram.com/_u/usuario
+        function usernameFromHref(href) {
+            if (!href) return null;
+            const m = String(href).match(/instagram\.com\/(?:_u\/)?([A-Za-z0-9_.]+)/i);
+            return m ? m[1] : null;
+        }
+
+        function cleanUsers(list) {
+            return [...new Set(list.map(normalizeUser).filter(u => USERNAME_REGEX.test(u)))];
+        }
+
+        async function readAllFiles(files) {
+            const out = [];
+            for (const f of files) {
+                out.push({ name: f.name, text: await f.text() });
+            }
+            return out;
+        }
+
+        async function processFiles() {
+            if (!fileData.followers || !fileData.following) return;
+
+            try {
+                let followersFiles = await readAllFiles(fileData.followers);
+                let followingFiles = await readAllFiles(fileData.following);
+
+                // Se os arquivos foram colocados nos campos trocados, corrige sozinho
+                const looksFollowing = f => /following/i.test(f.name) || f.text.includes('relationships_following');
+                const looksFollowers = f => /followers/i.test(f.name) && !/following/i.test(f.name);
+                if (followersFiles.every(looksFollowing) && followingFiles.every(looksFollowers)) {
+                    [followersFiles, followingFiles] = [followingFiles, followersFiles];
+                    showToast('Arquivos estavam trocados — corrigi automaticamente.');
+                }
+
+                const rawFollowers = followersFiles.flatMap(f => parseInstagramFile(f.text, f.name));
+                followingDates = {};
+                const rawFollowing = followingFiles.flatMap(f => parseInstagramFile(f.text, f.name, followingDates));
+
+                followersList = cleanUsers(rawFollowers);
+                followingList = cleanUsers(rawFollowing);
+                fileInfo = { followersFiles: followersFiles.length, followingFiles: followingFiles.length };
+
+                if (followersList.length === 0 || followingList.length === 0) {
+                    showToast('Não encontrei usuários em um dos arquivos. Confira se são os arquivos certos.', true);
+                    return;
+                }
+
+                calculateResults();
+            } catch (err) {
+                showToast('Erro ao ler arquivos. Verifique se são válidos do Instagram.', true);
+                console.error(err);
+            }
+        }
+
+        // Devolve a lista BRUTA de usuários (a limpeza/deduplicação é feita depois)
+        function parseInstagramFile(content, fileName, tsStore) {
+            const trimmed = content.trim();
+            let users = [];
+
+            if (/\.json$/i.test(fileName) || trimmed.startsWith('{') || trimmed.startsWith('[')) {
+                try {
+                    const data = JSON.parse(content);
+
+                    // Formato oficial: { string_list_data: [{ value | href }], title }
+                    //  - followers: o usuário vem em string_list_data[].value
+                    //  - following: o usuário vem em title e/ou no href (.../_u/usuario)
+                    const visit = (node) => {
+                        if (!node) return;
+                        if (Array.isArray(node)) { node.forEach(visit); return; }
+                        if (typeof node !== 'object') return;
+
+                        if (Array.isArray(node.string_list_data)) {
+                            let found = false;
+                            node.string_list_data.forEach(sub => {
+                                if (!sub) return;
+                                const name = sub.value || usernameFromHref(sub.href);
+                                if (name) {
+                                    users.push(name); found = true;
+                                    if (tsStore && sub.timestamp) tsStore[normalizeUser(name)] = sub.timestamp;
+                                }
+                            });
+                            if (!found && typeof node.title === 'string' && node.title) {
+                                users.push(node.title);
+                                const ts0 = node.string_list_data[0] && node.string_list_data[0].timestamp;
+                                if (tsStore && ts0) tsStore[normalizeUser(node.title)] = ts0;
+                            }
+                            return;
+                        }
+                        Object.values(node).forEach(visit);
+                    };
+                    visit(data);
+
+                    // Plano B: JSON em formato diferente do oficial
+                    if (users.length === 0) {
+                        const deep = (node) => {
+                            if (!node) return;
+                            if (Array.isArray(node)) { node.forEach(deep); return; }
+                            if (typeof node !== 'object') return;
+                            if (typeof node.value === 'string' && !node.value.startsWith('http')) users.push(node.value);
+                            if (typeof node.title === 'string') users.push(node.title);
+                            Object.values(node).forEach(deep);
+                        };
+                        deep(data);
+                    }
+                    return users;
+                } catch (e) {
+                    console.warn('Falha no parse JSON, tentando via Regex...', e);
+                }
+            }
+
+            // HTML: pega links de perfil (inclui o formato /_u/usuario)
+            const regexHtml = /instagram\.com\/(?:_u\/)?([A-Za-z0-9_.]+)/gi;
+            const ignore = ['p', 'explore', 'reels', 'reel', 'stories', 'direct', 'accounts', 'tv'];
+            let match;
+            while ((match = regexHtml.exec(content)) !== null) {
+                if (!ignore.includes(match[1].toLowerCase())) users.push(match[1]);
+            }
+            if (users.length > 0) return users;
+
+            // Texto simples, um por linha
+            return content.split('\n').map(l => usernameFromHref(l) || l);
+        }
+
+        function processText() {
+            const parseLines = raw => raw.split('\n').map(l => usernameFromHref(l) || l);
+
+            followersList = cleanUsers(parseLines(document.getElementById('text-followers').value));
+            followingList = cleanUsers(parseLines(document.getElementById('text-following').value));
+            fileInfo = null;
+            followingDates = {};
+
+            if (followingList.length === 0) {
+                showToast('Preencha pelo menos a lista de Seguidos!', true);
+                return;
+            }
+
+            calculateResults();
+        }
+
+        // Contas marcadas como "página não disponível" (guardado no navegador)
+        let deadSet = new Set();
+        let showDead = false;
+        try { deadSet = new Set(JSON.parse(localStorage.getItem('insta_dead') || '[]')); } catch (e) {}
+
+        function saveDead() {
+            try { localStorage.setItem('insta_dead', JSON.stringify([...deadSet])); } catch (e) {}
+        }
+
+        function toggleDead(u) {
+            if (deadSet.has(u)) deadSet.delete(u); else deadSet.add(u);
+            saveDead();
+            refreshCounts();
+            filterResults();
+        }
+
+        function toggleShowDead() {
+            showDead = !showDead;
+            document.getElementById('btn-show-dead').textContent = showDead ? 'Voltar à lista' : 'Ver marcadas';
+            filterResults();
+        }
+
+        function onProfileInput() {
+            try { localStorage.setItem('insta_profile_following', document.getElementById('profile-following').value); } catch (e) {}
+            refreshCounts();
+        }
+        try {
+            const saved = localStorage.getItem('insta_profile_following');
+            if (saved) document.getElementById('profile-following').value = saved;
+        } catch (e) {}
+
+        let fansList = [];          // te seguem e você não segue de volta
+        let listMode = 'notback';   // 'notback' | 'fans'
+        let activeFollowing = [];   // quem você segue de fato (já sem contas inexistentes, se souber)
+        let liveSet = null;         // contas reconhecidas na lista colada do Instagram
+
+        // Lê o texto colado do Instagram e guarda só os nomes que existem no arquivo
+        function getLiveSet() {
+            const raw = document.getElementById('live-following').value;
+            if (!raw.trim()) return null;
+            const tokens = new Set();
+            raw.split('\n').forEach(line => {
+                const t = line.trim();
+                if (!t) return;
+                const whole = normalizeUser(t);
+                if (USERNAME_REGEX.test(whole)) tokens.add(whole);
+                const first = normalizeUser(t.split(/\s+/)[0]);
+                if (USERNAME_REGEX.test(first)) tokens.add(first);
+            });
+            const live = new Set(followingList.filter(u => tokens.has(u)));
+            return live.size > 0 ? live : null;
+        }
+
+        function toggleFans() {
+            listMode = listMode === 'fans' ? 'notback' : 'fans';
+            const fans = listMode === 'fans';
+            document.getElementById('btn-fans').textContent = fans ? 'Voltar: quem não me segue de volta' : 'Ver quem te segue e você não segue';
+            document.getElementById('list-title').textContent = fans ? 'Te seguem e você não segue de volta' : 'Lista de Não-Seguidores';
+            document.getElementById('list-sub').textContent = fans
+                ? 'Seguidores seus que você não segue. Confira: se você segue muitos deles, me avise.'
+                : 'Pessoas que você segue, mas que não te seguem de volta';
+            showDead = false;
+            document.getElementById('btn-show-dead').textContent = 'Ver marcadas';
+            refreshCounts();
+            filterResults();
+        }
+
+        function onLivePaste() {
+            if (followingList.length > 0) calculateResults(true);
+        }
+
+        function refreshCounts() {
+            const dead = notFollowingBackList.filter(u => deadSet.has(u)).length;
+            const shown = notFollowingBackList.length - dead;                       // nomes na lista
+            const mutualCount = activeFollowing.length - notFollowingBackList.length;
+            const followingSet = new Set(activeFollowing);
+            const fansCount = followersList.filter(u => !followingSet.has(u)).length;
+            const profile = parseInt(document.getElementById('profile-following').value, 10);
+            const hasProfile = profile > 0;
+            const isLive = !!liveSet;
+
+            let realFollowing, realNotBack, ghosts = 0;
+            if (isLive) {
+                realFollowing = activeFollowing.length;
+                realNotBack = shown;
+                ghosts = followingList.length - activeFollowing.length;
+            } else if (hasProfile) {
+                realFollowing = profile;
+                realNotBack = Math.max(profile - mutualCount, 0);
+                ghosts = followingList.length - realFollowing;
+            } else {
+                realFollowing = followingList.length - dead;
+                realNotBack = shown;
+            }
+
+            document.getElementById('count-followers').textContent = followersList.length.toLocaleString('pt-BR');
+            document.getElementById('count-following').textContent = realFollowing.toLocaleString('pt-BR');
+            document.getElementById('count-not-following-back').textContent = realNotBack.toLocaleString('pt-BR');
+            document.getElementById('badge-count').textContent = realNotBack;
+
+            const filesTxt = fileInfo ? ` • Arquivos lidos: ${fileInfo.followersFiles} de seguidores, ${fileInfo.followingFiles} de seguindo` : '';
+            let txt = `Das ${realFollowing.toLocaleString('pt-BR')} pessoas que você segue: ${mutualCount.toLocaleString('pt-BR')} te seguem de volta e ${realNotBack.toLocaleString('pt-BR')} NÃO te seguem de volta • Te seguem e você não segue de volta: ${fansCount.toLocaleString('pt-BR')}`;
+            if (ghosts > 0) txt += ` • O arquivo trazia ${followingList.length.toLocaleString('pt-BR')} seguindo, mas ${ghosts} não contam mais (apagadas, desativadas ou que você já deixou de seguir)`;
+            document.getElementById('analysis-details').textContent = txt + filesTxt;
+
+            if (listMode === 'fans') document.getElementById('badge-count').textContent = fansList.length;
+
+            // Status da lista colada
+            const status = document.getElementById('live-status');
+            const rawPasted = document.getElementById('live-following').value.trim();
+            if (!rawPasted) {
+                status.textContent = '';
+            } else if (!isLive) {
+                status.className = 'text-xs text-amber-400';
+                status.textContent = followingList.length === 0
+                    ? 'Lista colada. Agora carregue os arquivos e clique em Analisar.'
+                    : 'Não reconheci nenhum nome do arquivo nessa lista. Confira se copiou a lista de "Seguindo".';
+            } else {
+                let t = `Reconheci ${liveSet.size} contas na sua lista de seguindo.`;
+                if (hasProfile) {
+                    if (liveSet.size === profile) { t += ' Bate com o seu perfil ✓'; status.className = 'text-xs text-emerald-400'; }
+                    else if (liveSet.size < profile) { t += ` O seu perfil diz ${profile}: se faltam contas, role a lista do Instagram até o final e cole de novo (ou você seguiu alguém depois de exportar).`; status.className = 'text-xs text-amber-400'; }
+                    else { t += ` O seu perfil diz ${profile}.`; status.className = 'text-xs text-amber-400'; }
+                } else {
+                    status.className = 'text-xs text-emerald-400';
+                }
+                status.textContent = t;
+            }
+
+            const note = document.getElementById('list-note');
+            if (isLive) {
+                note.className = 'text-xs text-emerald-400 mt-1';
+                note.textContent = `Lista exata: ${shown} contas que você segue hoje e que não te seguem de volta.`;
+            } else if (hasProfile && profile === followersList.length) {
+                note.className = 'text-xs text-amber-400 mt-1';
+                note.textContent = `Atenção: o número que você digitou (${profile}) é igual ao de SEGUIDORES. Aqui vai o número de "seguindo" do seu perfil.`;
+            } else if (!hasProfile) {
+                note.className = 'text-xs text-amber-400 mt-1';
+                note.textContent = 'Os números abaixo vêm só do arquivo e incluem contas que não existem mais. Cole a sua lista de Seguindo (ou digite o número do perfil) no topo para ficar exato.';
+            } else if (shown > realNotBack) {
+                note.className = 'text-xs text-amber-400 mt-1';
+                note.textContent = `A lista tem ${shown} nomes, mas só ${realNotBack} são contas reais: ${shown - realNotBack} são contas que não existem mais. Cole a sua lista de Seguindo no topo para o app tirar essas automaticamente.`;
+            } else {
+                note.className = 'text-xs text-emerald-400 mt-1';
+                note.textContent = 'A lista confere com o seu perfil ✓';
+            }
+        }
+
+        function calculateResults(silent = false) {
+            const followersSet = new Set(followersList);
+
+            liveSet = getLiveSet();
+            activeFollowing = liveSet ? followingList.filter(u => liveSet.has(u)) : followingList.slice();
+
+            // Quem você segue (de fato) mas que não está na lista de seguidores
+            notFollowingBackList = activeFollowing.filter(user => !followersSet.has(user));
+            const activeSet = new Set(activeFollowing);
+            fansList = followersList.filter(u => !activeSet.has(u));
+
+            refreshCounts();
+            sortList();
+
+            if (silent) return;
+            const resultsSection = document.getElementById('results-section');
+            resultsSection.classList.remove('hidden');
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+            showToast('Análise concluída com sucesso!');
+        }
+
+        function sortList() {
+            const mode = document.getElementById('sort-select').value;
+            const ts = u => followingDates[u] || 0;
+            if (mode === 'recent') notFollowingBackList.sort((a, b) => ts(b) - ts(a));
+            else if (mode === 'oldest') notFollowingBackList.sort((a, b) => ts(a) - ts(b));
+            else notFollowingBackList.sort((a, b) => a.localeCompare(b));
+            filterResults();
+        }
+
+        function formatDate(u) {
+            const t = followingDates[u];
+            if (!t) return '';
+            return new Date(t * 1000).toLocaleDateString('pt-BR', { month: 'short', year: 'numeric' });
+        }
+
+        function renderUnfollowersList(list) {
+            const container = document.getElementById('unfollowers-list');
+            const emptySearch = document.getElementById('empty-search');
+            container.innerHTML = '';
+
+            if (list.length === 0) {
+                emptySearch.classList.remove('hidden');
+                return;
+            } else {
+                emptySearch.classList.add('hidden');
+            }
+
+            list.forEach(username => {
+                const card = document.createElement('div');
+                card.className = 'bg-black/30 border border-insta-border hover:border-insta-pink/40 p-3 rounded-xl flex items-center justify-between transition group';
+                card.innerHTML = `
+                    <div class="flex items-center space-x-3 overflow-hidden">
+                        <div class="w-8 h-8 rounded-full gradient-bg flex items-center justify-center text-white text-xs font-bold shrink-0 uppercase">
+                            ${username.charAt(0)}
+                        </div>
+                        <div class="overflow-hidden">
+                            <span class="block text-xs font-medium text-gray-200 truncate group-hover:text-white">@${username}</span>
+                            ${formatDate(username) ? `<span class="block text-[10px] text-gray-500">Seguindo desde ${formatDate(username)}</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1.5 shrink-0">
+                        ${listMode === 'fans' ? '' : `<button onclick="toggleDead('${username}')" title="Marque se ao abrir o perfil aparecer: Esta página não está disponível" class="text-xs ${deadSet.has(username) ? 'text-emerald-400 bg-emerald-500/10' : 'text-gray-400 hover:text-red-400 bg-white/5 hover:bg-red-500/10'} px-2.5 py-1.5 rounded-lg transition">${deadSet.has(username) ? 'Desmarcar' : 'Não existe'}</button>`}
+                    <a href="https://instagram.com/${username}" target="_blank" rel="noopener noreferrer" class="text-xs text-gray-400 hover:text-insta-pink bg-white/5 hover:bg-insta-pink/10 px-2.5 py-1.5 rounded-lg transition shrink-0 flex items-center gap-1" title="Abrir perfil no Instagram">
+                        <span>Perfil</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                    </a>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterResults() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const base = listMode === 'fans' ? fansList : notFollowingBackList;
+            const filtered = base.filter(user => user.toLowerCase().includes(query) && (listMode === 'fans' || (showDead ? deadSet.has(user) : !deadSet.has(user))));
+            renderUnfollowersList(filtered);
+        }
+
+        function copyUnfollowersList() {
+            const src = listMode === 'fans' ? fansList : notFollowingBackList.filter(u => !deadSet.has(u));
+            if (src.length === 0) return;
+            const textToCopy = src.map(u => `@${u}`).join('\n');
+
+            // Usando execCommand para compatibilidade garantida
+            const textarea = document.createElement('textarea');
+            textarea.value = textToCopy;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            showToast('Lista copiada para a área de transferência!');
+        }
+
+        function showToast(msg, isError = false) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-msg');
+
+            toastMsg.textContent = msg;
+            if (isError) {
+                toast.className = toast.className.replace('bg-emerald-500', 'bg-red-500');
+            } else {
+                toast.className = toast.className.replace('bg-red-500', 'bg-emerald-500');
+            }
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
