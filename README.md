@@ -65,15 +65,7 @@ Sem nenhuma das duas, o app funciona, mas mostra os números do arquivo.
 
 O InstaCheck é grátis e de código aberto. Se ele te ajudou e você quiser retribuir, qualquer valor é bem-vindo, mas é totalmente opcional.
 
-**De qualquer país:** [ko-fi.com/fervzeira](https://ko-fi.com/fervzeira)
-
-**Pix (Brasil):** chave aleatória
-
-`9eb09f4c-0725-4fc3-8419-4b0b509391a1`
-
-<img src="docs/pix-qr.png" alt="QR code do Pix" width="200">
-
-No app do seu banco, use **Pix** > **Pagar** e leia o QR code ou cole a chave.
+**[ko-fi.com/fervzeira](https://ko-fi.com/fervzeira)**
 
 *If InstaCheck helped you, you can support it on [Ko-fi](https://ko-fi.com/fervzeira). Thank you!*
 
