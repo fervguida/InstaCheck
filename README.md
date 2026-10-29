@@ -4,13 +4,26 @@
 
 <h1 align="center">InstaCheck</h1>
 
-<p align="center">Aplicativo para descobrir <strong>quem você segue no Instagram e não te segue de volta</strong>, usando os dados que o próprio Instagram permite você baixar. Funciona direto no navegador ou como app Android (APK).</p>
+<p align="center">Aplicativo para descobrir <strong>quem você segue no Instagram e não te segue de volta</strong>, usando os dados que o próprio Instagram permite você baixar. Disponível para Android, Windows e Linux.</p>
 
 - **Sem login e sem senha.** O app nunca acessa a sua conta.
 - **100% local.** Os arquivos são lidos no seu aparelho e nada é enviado para a internet.
 - **Funciona offline** depois de instalado.
 
 > Projeto independente, sem ligação com o Instagram ou a Meta.
+
+## Baixar
+
+Abra a aba **Releases** (na coluna da direita da página do repositório) e baixe a versão do seu aparelho:
+
+| Sistema | Arquivo | Como instalar |
+|---|---|---|
+| Android | `InstaCheck.apk` | Envie para o celular, toque no arquivo e permita instalar de fontes desconhecidas |
+| Windows (instalador) | `InstaCheck-Instalador-1.0.0.exe` | Execute e siga as telas |
+| Windows (portátil) | `InstaCheck-Portatil-1.0.0.exe` | Execute direto, sem instalar |
+| Linux | `InstaCheck-1.0.0.AppImage` | Dê permissão de execução (`chmod +x`) e abra |
+
+> Os aplicativos não são assinados digitalmente. No Windows, se aparecer "O Windows protegeu o computador", clique em **Mais informações** e depois em **Executar assim mesmo**. No Android, se o Play Protect avisar, toque em **Instalar mesmo assim**.
 
 ## O que ele mostra
 
@@ -48,25 +61,44 @@ O arquivo do Instagram inclui contas apagadas ou desativadas, que o seu perfil n
 
 Sem nenhuma das duas, o app funciona, mas mostra os números do arquivo.
 
-## Gerar o APK (Android)
+## Gerar as versões (para quem mantém o projeto)
 
-O projeto usa o [Capacitor](https://capacitorjs.com/) e o GitHub Actions compila o APK automaticamente.
+O GitHub Actions compila tudo automaticamente:
 
-1. Envie todos os arquivos deste projeto para um repositório no GitHub (inclusive a pasta `.github`).
-2. Abra a aba **Actions** > **Build APK** > **Run workflow**.
-3. Quando terminar (5 a 10 minutos), baixe **InstaCheck-apk** em *Artifacts*.
-4. Descompacte, envie o `app-debug.apk` para o celular e instale, permitindo instalar de fontes desconhecidas.
+- **Android (APK):** usa o [Capacitor](https://capacitorjs.com/) (workflow `build-apk.yml`).
+- **Computador (Windows e Linux):** usa o [Electron](https://www.electronjs.org/) (workflow `build-desktop.yml`, pasta `desktop/`).
 
-O APK gerado é de teste (debug). Para publicar na Play Store, é preciso assinar um APK de lançamento.
+Para publicar uma versão nova:
+
+1. Na aba **Releases**, clique em **Draft a new release**.
+2. Em **Choose a tag**, digite um nome como `v1.0.0` e escolha **Create new tag**.
+3. Clique em **Publish release**.
+4. Espere uns 10 a 15 minutos. Os arquivos (APK, .exe e AppImage) aparecem sozinhos na própria release, em *Assets*.
+
+Também dá para compilar sem criar release: aba **Actions** > escolha **Build APK** ou **Build Desktop** > **Run workflow**. Os arquivos ficam em *Artifacts* no fim da execução.
+
+O número da versão do app de computador (nos nomes dos arquivos) vem do campo `version` em `desktop/package.json`.
+
+### Rodar a versão de computador no seu PC
+
+Com o [Node.js](https://nodejs.org/) instalado:
+
+```
+cd desktop
+npm install
+npm start
+```
 
 ## Estrutura
 
 ```
-www/index.html        o app (HTML, CSS e JavaScript)
+www/index.html        o app, versão Android (HTML, CSS e JavaScript)
 www/assets/           estilos e fontes locais
-assets/               ícone e tela de abertura
+assets/               ícone e tela de abertura do Android
 capacitor.config.json configuração do app Android
-.github/workflows/    compilação automática do APK
+desktop/              versão de computador (Electron)
+docs/logo.png         logo usado neste README
+.github/workflows/    compilação automática (APK e computador)
 ```
 
 ## Limitações
